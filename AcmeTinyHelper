@@ -1,0 +1,8 @@
+#!/usr/bin/python
+
+from AcmeTinyHelperConsole import AcmeTinyHelperConsole
+
+if __name__ == '__main__':
+    console = AcmeTinyHelperConsole()
+    console.start()
+
