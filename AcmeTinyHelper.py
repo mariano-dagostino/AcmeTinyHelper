@@ -11,18 +11,19 @@ class SSLManager(object):
         self.acme_tiny_path = acme_tiny_path
         self.challenge_path = challenge_path
         self.dhbits = 4096
+        self.returnString = False
 
     def _fileExists(self, file):
         return os.path.isfile(file)
 
     def _makePath(self):
-        self._runCommand(
+        return self._runCommand(
           'mkdir -p ' + self.path
         )
 
     def _callOpenSSL(self, fileName, bits=4096):
         path = self.path
-        self._runCommand(
+        return self._runCommand(
           "openssl genrsa {bits} > {path}/{fileName}".format(**locals())
         )
 
@@ -32,7 +33,7 @@ class SSLManager(object):
 
         if len(domains) == 1:
             domain = domains[0]
-            self._runCommand(
+            return self._runCommand(
                 'openssl req -new -sha256 -key {path}/domain.key -subj "/CN={domain}" > {path}/domain.csr'.format(**locals())
             )
         else:
@@ -40,7 +41,7 @@ class SSLManager(object):
             for d in domains:
                 domain_list.append('DNS:' + d)
             domain = ','.join(domain_list)
-            self._runCommand(
+            return self._runCommand(
                 'openssl req -new -sha256 -key {path}/domain.key -subj "/" -reqexts SAN -config <(cat /etc/ssl/openssl.cnf <(printf "[SAN]\nsubjectAltName={domain}")) > domain.csr'.format(**locals())
             )
 
@@ -48,18 +49,21 @@ class SSLManager(object):
         path = self.path
         dhbits = self.dhbits
 
-        self._runCommand(
+        return self._runCommand(
             'openssl dhparam -out {path}/dhparam.pem {dhbits}'.format(**locals())
         )
 
     def _runCommand(self, string):
+        if self.returnString:
+            return string
+
         print string
         print ""
 
     def _getIntermediateCertificate(self):
         path = self.path
         url = 'https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem'
-        self._runCommand(
+        return self._runCommand(
           'wget -O - {url} > {path}/intermediate.pem'.format(**locals())
         )
 
@@ -69,7 +73,7 @@ class SSLManager(object):
         acme_tiny_path = self.acme_tiny_path
         challenge_path = self.challenge_path
 
-        self._runCommand(
+        return self._runCommand(
           ('python {acme_tiny_path} ' +
                   '--account-key {path}/account.key ' +
                   '--csr {path}/domain.csr ' +
@@ -79,7 +83,7 @@ class SSLManager(object):
 
     def _chainCertificates(self):
         path = self.path
-        self._runCommand(
+        return self._runCommand(
            'cat {path}/signed.crt {path}/intermediate.pem > {path}/chained.pem'.format(**locals())
         )
 
@@ -121,10 +125,11 @@ class SSLManager(object):
             self._invalidParametersException()
 
 
-manager = SSLManager(sys.argv[2], sys.argv[3].split(','))
-if sys.argv[1] == 'new':
-  manager.newCertificate()
-else:
-  manager.renewCertificate()
+if __name__ == '__main__':
+    manager = SSLManager(sys.argv[2], sys.argv[3].split(','))
+    if sys.argv[1] == 'new':
+      manager.newCertificate()
+    else:
+      manager.renewCertificate()
 
 
