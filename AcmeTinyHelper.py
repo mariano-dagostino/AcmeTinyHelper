@@ -5,12 +5,13 @@ import re
 
 class SSLManager(object):
 
-    def __init__(self, path, domains, acme_tiny_path="/bin/acme_tiny.py", challenge_path="/var/www/challenges"):
+    def __init__(self, path, domains, acme_tiny_path="/bin/acme_tiny.py", challenge_path="/var/www/challenges", execute=False):
         self.path = path
         self.domains = domains
         self.acme_tiny_path = acme_tiny_path
         self.challenge_path = challenge_path
         self.dhbits = 4096
+        self.execute = False
         self.returnString = False
 
     def _fileExists(self, file):
@@ -87,8 +88,6 @@ class SSLManager(object):
            'cat {path}/signed.crt {path}/intermediate.pem > {path}/chained.pem'.format(**locals())
         )
 
-    def _invalidParametersException(self):
-        raise Exception('Invalid parameters: \n usage: python letsencrypt-acme-tiny.py /etc/letsencrypt/certs "example.com,www.example.com"')
 
     def _checkParameters(self):
         #if not os.path.isdir(self.path):
@@ -103,33 +102,17 @@ class SSLManager(object):
         return True
 
     def newCertificate(self):
-        if self._checkParameters():
-            self._makePath()
-            self._callOpenSSL('account.key')
-            self._callOpenSSL('domain.key')
-            self._getDiffieHellmanParams()
-            self._getIntermediateCertificate()
-            self._getSelfSignedCertificate()
-            self._getSignedCertificate()
-            self._chainCertificates()
-        else:
-            self._invalidParametersException()
+        self._makePath()
+        self._callOpenSSL('account.key')
+        self._callOpenSSL('domain.key')
+        self._getDiffieHellmanParams()
+        self._getIntermediateCertificate()
+        self._getSelfSignedCertificate()
+        self._getSignedCertificate()
+        self._chainCertificates()
 
     def renewCertificate(self):
-        if self._checkParameters():
-            self._getIntermediateCertificate()
-            self._getSelfSignedCertificate()
-            self._getSignedCertificate()
-            self._chainCertificates()
-        else:
-            self._invalidParametersException()
-
-
-if __name__ == '__main__':
-    manager = SSLManager(sys.argv[2], sys.argv[3].split(','))
-    if sys.argv[1] == 'new':
-      manager.newCertificate()
-    else:
-      manager.renewCertificate()
-
-
+        self._getIntermediateCertificate()
+        self._getSelfSignedCertificate()
+        self._getSignedCertificate()
+        self._chainCertificates()
