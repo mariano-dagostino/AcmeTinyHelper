@@ -35,14 +35,15 @@ cat /etc/letsencrypt/certs/example.com/signed.crt /etc/letsencrypt/certs/example
 
 # Actions
 
-- new: Prints all the files to require a new certificate.
-- renew: Prints all the steps required to renew a certificate.
+- new: Prints or executes all the instructions to obtain a new certificate signed by letsencrypt.
+- new: Prints or executes all the instructions to renew a certificate signed by letsencrypt.
 - help: Displays the usage instrucctions.
 
-# Parametters
+# Parameters
 
-- ```--path: Indicates where will be saved all the files```
+- ```--path: Indicates where will be saved all the files.```
 - ```--domains: A comma separated list of domains (example: 'example.com,www.example.com')```
 - ```--acme-tiny-path: The path where acme-tiny.py is located (defaults to /bin/acme-tiny.py)```
 - ```--challenge-path: The directory where acme-tiny.py will write the challenge to authenticate the domain with letscrypt.org (defaults to /var/www/challenges)```
-- ```--execute: If this parameter is set, the script will execute all the commands instead of output them in the terminal as text.```
+- ```--execute: If present, the script will execute all the commands instead of output them in the terminal as text. The process will check first if the signed certificate is absent before start all the process.```
+- ```--force: If present, the script will execute all the commands even if the signed certificate was already obtained.```
