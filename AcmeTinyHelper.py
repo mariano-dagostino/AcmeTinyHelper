@@ -12,12 +12,15 @@ class SSLManager(object):
         self.challenge_path = challenge_path
         self.execute = execute
 
-        self.returnString = False
+        self.simulate = True
+        self.force = False
         self.dhbits = 4096
         self.letsencrypt_x3_cross_signed_pem = 'https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem'
 
-    def _fileExists(self, file):
-        return os.path.isfile(file)
+
+    def _signedCertNotFound(self):
+        path = self.path
+        return not os.path.isfile('{path}/signed.crt').format(**locals())
 
     def _makePath(self):
         return self._runCommand(
@@ -57,7 +60,7 @@ class SSLManager(object):
         )
 
     def _runCommand(self, string):
-        if self.returnString:
+        if self.simulate:
             return string
 
         if self.execute:
@@ -105,14 +108,15 @@ class SSLManager(object):
         return True
 
     def newCertificate(self):
-        self._makePath()
-        self._callOpenSSL('account.key')
-        self._callOpenSSL('domain.key')
-        self._getDiffieHellmanParams()
-        self._getIntermediateCertificate()
-        self._getSelfSignedCertificate()
-        self._getSignedCertificate()
-        self._chainCertificates()
+        if self.simulate or self.force or self._signedCertNotFound():
+            self._makePath()
+            self._callOpenSSL('account.key')
+            self._callOpenSSL('domain.key')
+            self._getDiffieHellmanParams()
+            self._getIntermediateCertificate()
+            self._getSelfSignedCertificate()
+            self._getSignedCertificate()
+            self._chainCertificates()
 
     def renewCertificate(self):
         self._getIntermediateCertificate()
