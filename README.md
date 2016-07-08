@@ -1,7 +1,8 @@
 # AcmeTinyHelper
 
-This projetc is a helper for acme-tiny.py that automate the creation of the
-files required by letsencrypt and acme-tiny to get a certificate.
+This project is a helper for [acme-tiny.py](https://github.com/diafygi/acme-tiny)
+that automate the creation of the files required by letsencrypt and acme-tiny to
+get a certificate.
 
 # Example
 
@@ -30,7 +31,7 @@ cat /etc/letsencrypt/certs/example.com/signed.crt /etc/letsencrypt/certs/example
 # Mode of use
 
 
-```./AcmeTinyHelper [action] [parametters]```
+```./AcmeTinyHelper [action] [parameters]```
 
 # Actions
 
