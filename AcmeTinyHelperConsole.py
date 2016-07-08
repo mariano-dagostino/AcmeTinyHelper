@@ -11,6 +11,7 @@ class AcmeTinyHelperConsole(object):
         self.acme_tiny_path = '/bin/acme-tiny.py'
         self.challenge_path = '/var/www/challenges'
         self.execute = False
+        self.force = False
 
     def parseParams(self, params):
         for param, value in params:
@@ -24,6 +25,8 @@ class AcmeTinyHelperConsole(object):
                 self.challenge_path = value
             elif param == '--execute':
                 self.execute = True
+            elif param == '--force':
+                self.force = True
 
 
     def checkMissingParams(self):
@@ -38,7 +41,8 @@ class AcmeTinyHelperConsole(object):
           'domains=',
           'acme-tiny-path=',
           'challenge-path='
-          'execute'
+          'execute',
+          'force'
         ]
 
 
@@ -56,7 +60,8 @@ class AcmeTinyHelperConsole(object):
                 "--domains: A comma separated list of domains (example: 'example.com,www.example.com')\n\n" + \
                 "--acme-tiny-path: The path where acme-tiny.py is located (defaults to /bin/acme-tiny.py)\n\n" + \
                 "--challenge-path: The directory where acme-tiny.py will write the challenge to authenticate the domain with letscrypt.org (defaults to /var/www/challenges)\n\n" + \
-                "--execute: If this parameter is set, the script will execute all the commands instead of output them in the terminal as text.\n\n"
+                "--execute: If present, the script will execute all the commands instead of output them in the terminal as text. The process will check first if the signed certificate is absent before start all the process.\n\n" + \
+                "--force: If present, the script will execute all the commands even if the signed certificate was already obtained.\n\n"
 
         return usage
 
@@ -82,6 +87,9 @@ class AcmeTinyHelperConsole(object):
                                  self.acme_tiny_path,
                                  self.challenge_path,
                                  self.execute)
+
+        manager.force = self.force
+
         if action == 'new':
             manager.newCertificate()
 
