@@ -1,7 +1,7 @@
 import sys
 import getopt
 
-from AcmeTinyHelper import SSLManager
+from AcmeTinyHelper import AcmeTinyHelper
 
 class AcmeTinyHelperConsole(object):
 
@@ -77,11 +77,11 @@ class AcmeTinyHelperConsole(object):
     def run(self, action, params):
         self.parseParams(params)
 
-        manager = SSLManager(self.path,
-                             self.domains,
-                             self.acme_tiny_path,
-                             self.challenge_path,
-                             self.execute)
+        manager = AcmeTinyHelper(self.path,
+                                 self.domains,
+                                 self.acme_tiny_path,
+                                 self.challenge_path,
+                                 self.execute)
         if action == 'new':
             manager.newCertificate()
 

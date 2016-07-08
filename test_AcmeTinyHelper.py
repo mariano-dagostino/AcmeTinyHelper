@@ -1,11 +1,11 @@
-from AcmeTinyHelper import SSLManager
+from AcmeTinyHelper import AcmeTinyHelper
 
 class TestAcmeTinyHelper:
 
 
 
     def setup_method(self, method):
-        self.manager = SSLManager('/my/path', ['example.com'], '/bin/acme_tiny.py', '/var/www/challenges', False)
+        self.manager = AcmeTinyHelper('/my/path', ['example.com'], '/bin/acme_tiny.py', '/var/www/challenges', False)
         self.manager.returnString = True
 
 

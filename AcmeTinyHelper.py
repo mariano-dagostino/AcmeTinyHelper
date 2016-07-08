@@ -3,7 +3,7 @@ import sys
 import os
 import re
 
-class SSLManager(object):
+class AcmeTinyHelper(object):
 
     def __init__(self, path, domains, acme_tiny_path, challenge_path, execute):
         self.path = path
@@ -61,13 +61,13 @@ class SSLManager(object):
 
     def _runCommand(self, string):
         if self.simulate:
-            return string
+            print string
+            print ""
 
         if self.execute:
             os.command(string)
 
-        print string
-        print ""
+        return string
 
     def _getIntermediateCertificate(self):
         path = self.path
