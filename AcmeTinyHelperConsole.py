@@ -48,7 +48,7 @@ class AcmeTinyHelperConsole(object):
 
     def usage(self):
         usage = "Usage mode:\n\n" + \
-                "python AcmeTinyHelper.py [new|renew] /path/to/ssl-certs " + \
+                "./AcmeTinyHelper [new|renew] /path/to/ssl-certs " + \
                 "'example.com,www.example.com' " + \
                 "[--acme-tiny-path=/bin/acme-tiny.py " + \
                 "--challenge-path=/var/www/letsencrypt-challenges]\n\n" + \

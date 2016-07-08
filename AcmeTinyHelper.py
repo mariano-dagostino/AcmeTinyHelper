@@ -5,14 +5,16 @@ import re
 
 class SSLManager(object):
 
-    def __init__(self, path, domains, acme_tiny_path="/bin/acme_tiny.py", challenge_path="/var/www/challenges", execute=False):
+    def __init__(self, path, domains, acme_tiny_path, challenge_path, execute):
         self.path = path
         self.domains = domains
         self.acme_tiny_path = acme_tiny_path
         self.challenge_path = challenge_path
-        self.dhbits = 4096
-        self.execute = False
+        self.execute = execute
+
         self.returnString = False
+        self.dhbits = 4096
+        self.letsencrypt_x3_cross_signed_pem = 'https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem'
 
     def _fileExists(self, file):
         return os.path.isfile(file)
@@ -58,12 +60,15 @@ class SSLManager(object):
         if self.returnString:
             return string
 
+        if self.execute:
+            os.command(string)
+
         print string
         print ""
 
     def _getIntermediateCertificate(self):
         path = self.path
-        url = 'https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem'
+        url = self.letsencrypt_x3_cross_signed_pem
         return self._runCommand(
           'wget -O - {url} > {path}/intermediate.pem'.format(**locals())
         )
@@ -90,8 +95,6 @@ class SSLManager(object):
 
 
     def _checkParameters(self):
-        #if not os.path.isdir(self.path):
-        #    return False
         return True
 
         valid_domain_regex = r'^[a-zA-Z\d-]{,63}(\.[a-zA-Z\d-]{,63}).$'
