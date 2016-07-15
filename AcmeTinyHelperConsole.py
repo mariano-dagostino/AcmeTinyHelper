@@ -40,7 +40,7 @@ class AcmeTinyHelperConsole(object):
           'path=',
           'domains=',
           'acme-tiny-path=',
-          'challenge-path='
+          'challenge-path=',
           'execute',
           'force'
         ]
@@ -69,12 +69,6 @@ class AcmeTinyHelperConsole(object):
     def invalidAction(self, action):
         valid_actions = ', '.join(self.actions())
         print "{action} is invalid. The only valid actions are: {valid_actions}".format(**locals())
-        print self.usage()
-        sys.exit(2)
-
-
-    def invalidParams(self):
-        print "Some parameters are not valid."
         print self.usage()
         sys.exit(2)
 
@@ -112,8 +106,10 @@ class AcmeTinyHelperConsole(object):
             self.checkMissingParams()
             self.run(sys.argv[1], opts)
 
-        except getopt.GetoptError:
-            self.invalidParams()
+        except getopt.GetoptError, e:
+            print e
+            print self.usage()
+            sys.exit(2)
 
 
 if __name__ == '__main__':

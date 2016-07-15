@@ -65,7 +65,7 @@ class AcmeTinyHelper(object):
             print ""
 
         if self.execute:
-            os.command(string)
+            os.system(string)
 
         return string
 
@@ -112,7 +112,6 @@ class AcmeTinyHelper(object):
             self._makePath()
             self._callOpenSSL('account.key')
             self._callOpenSSL('domain.key')
-            self._getDiffieHellmanParams()
             self._getIntermediateCertificate()
             self._getSelfSignedCertificate()
             self._getSignedCertificate()
