@@ -8,7 +8,7 @@ get a certificate.
 
 # Example
 
-```./AcmeTinyHelper new --path=/etc/letsencrypt/certs --domains='example.com'```
+```./AcmeTinyHelper new --path=/etc/letsencrypt/certs --domains='example.com' --acme-tiny-path=/path/to/acme_tiny.py --challenge-path=/var/www/letsencrypt-challenges```
 
 The result of running this script is:
 
@@ -43,7 +43,7 @@ cat /etc/letsencrypt/certs/example.com/signed.crt /etc/letsencrypt/certs/example
 
 - ```--path: Indicates where will be saved all the files.```
 - ```--domains: A comma separated list of domains (example: 'example.com,www.example.com')```
-- ```--acme-tiny-path: The path where acme-tiny.py is located (defaults to /bin/acme-tiny.py)```
-- ```--challenge-path: The directory where acme-tiny.py will write the challenge to authenticate the domain with letscrypt.org (defaults to /var/www/challenges)```
+- ```--acme-tiny-path: The path where acme-tiny.py is located```
+- ```--challenge-path: The directory where acme-tiny.py will write the challenge to authenticate the domain with letscrypt.org```
 - ```--execute: If present, the script will execute all the commands instead of output them in the terminal as text. The process will check first if the signed certificate is absent before start all the process.```
 - ```--force: If present, the script will execute all the commands even if the signed certificate was already obtained.```

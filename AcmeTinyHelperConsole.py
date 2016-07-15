@@ -9,8 +9,8 @@ class AcmeTinyHelperConsole(object):
     def __init__(self):
         self.path = None
         self.domains = None
-        self.acme_tiny_path = '/bin/acme-tiny.py'
-        self.challenge_path = '/var/www/challenges'
+        self.acme_tiny_path = None
+        self.challenge_path = None
         self.execute = False
         self.force = False
 
@@ -31,20 +31,23 @@ class AcmeTinyHelperConsole(object):
 
 
     def checkMissingParams(self):
-        if self.path is None or self.domains is None:
+        if self.path is None or self.domains is None or \
+            self.challenge_path is None or self.acme_tiny_path is None:
             print("Some parameters are missing")
             print(self.usage())
-            sys.exit(2)
+            return False
+
+        return True
 
     def appParams(self):
-        return [
+        return (
           'path=',
           'domains=',
           'acme-tiny-path=',
           'challenge-path=',
           'execute',
           'force'
-        ]
+        )
 
 
     def actions(self):
@@ -55,12 +58,12 @@ class AcmeTinyHelperConsole(object):
         usage = "Usage mode:\n\n" + \
                 "./AcmeTinyHelper [new|renew] /path/to/ssl-certs " + \
                 "'example.com,www.example.com' " + \
-                "[--acme-tiny-path=/bin/acme-tiny.py " + \
-                "--challenge-path=/var/www/letsencrypt-challenges]\n\n" + \
+                "--acme-tiny-path=/path/to/acme_tiny.py " + \
+                "--challenge-path=/var/www/letsencrypt-challenges\n\n" + \
                 "--path: Indicates where will be saved all the files\n\n" + \
                 "--domains: A comma separated list of domains (example: 'example.com,www.example.com')\n\n" + \
-                "--acme-tiny-path: The path where acme-tiny.py is located (defaults to /bin/acme-tiny.py)\n\n" + \
-                "--challenge-path: The directory where acme-tiny.py will write the challenge to authenticate the domain with letscrypt.org (defaults to /var/www/challenges)\n\n" + \
+                "--acme-tiny-path: The path where acme-tiny.py is located.\n\n" + \
+                "--challenge-path: The directory where acme-tiny.py will write the challenge to authenticate the domain with letscrypt.org\n\n" + \
                 "--execute: If present, the script will execute all the commands instead of output them in the terminal as text. The process will check first if the signed certificate is absent before start all the process.\n\n" + \
                 "--force: If present, the script will execute all the commands even if the signed certificate was already obtained.\n\n"
 
@@ -104,8 +107,8 @@ class AcmeTinyHelperConsole(object):
                 self.invalidAction(sys.argv[1])
 
             self.parseParams(opts)
-            self.checkMissingParams()
-            self.run(sys.argv[1], opts)
+            if self.checkMissingParams():
+                self.run(sys.argv[1], opts)
 
         except (getopt.GetoptError, e):
             print(e)
