@@ -1,4 +1,4 @@
-# usage: python letsencrypt-acme-tiny.py /etc/letsencrypt/certs "example.com,www.example.com"
+from __future__ import print_function
 import sys
 import os
 import re
@@ -61,8 +61,8 @@ class AcmeTinyHelper(object):
 
     def _runCommand(self, string):
         if self.simulate:
-            print string
-            print ""
+            print(string)
+            print("")
 
         if self.execute:
             os.system(string)

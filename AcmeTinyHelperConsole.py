@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sys
 import getopt
 
@@ -31,8 +32,8 @@ class AcmeTinyHelperConsole(object):
 
     def checkMissingParams(self):
         if self.path is None or self.domains is None:
-            print "Some parameters are missing"
-            print self.usage()
+            print("Some parameters are missing")
+            print(self.usage())
             sys.exit(2)
 
     def appParams(self):
@@ -68,8 +69,8 @@ class AcmeTinyHelperConsole(object):
 
     def invalidAction(self, action):
         valid_actions = ', '.join(self.actions())
-        print "{action} is invalid. The only valid actions are: {valid_actions}".format(**locals())
-        print self.usage()
+        print("{action} is invalid. The only valid actions are: {valid_actions}".format(**locals()))
+        print(self.usage())
         sys.exit(2)
 
 
@@ -93,7 +94,7 @@ class AcmeTinyHelperConsole(object):
     def start(self):
 
         if sys.argv[1] == 'help':
-            print self.usage()
+            print(self.usage())
             sys.exit(0)
 
         try:
@@ -107,8 +108,8 @@ class AcmeTinyHelperConsole(object):
             self.run(sys.argv[1], opts)
 
         except getopt.GetoptError, e:
-            print e
-            print self.usage()
+            print(e)
+            print(self.usage())
             sys.exit(2)
 
 
