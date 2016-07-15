@@ -7,10 +7,8 @@ class TestAcmeTinyHelper:
         self.manager.returnString = True
 
 
-
     def test_makePath(self):
         assert self.manager._makePath() == 'mkdir -p /my/path'
-
 
 
     def test_callOpenSSL(self):
@@ -18,17 +16,14 @@ class TestAcmeTinyHelper:
         assert self.manager._callOpenSSL('domain.key')  == 'openssl genrsa 4096 > /my/path/domain.key'
 
 
-
     def test_DiffieHellmanParams(self):
         expected = 'openssl dhparam -out /my/path/dhparam.pem 4096'
         assert self.manager._getDiffieHellmanParams() == expected
 
 
-
     def test_getIntermediateCertificate(self):
         expected = 'wget -O - https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem > /my/path/intermediate.pem'
         assert self.manager._getIntermediateCertificate() == expected
-
 
 
     def test_getSelfSignedCertificate(self):
@@ -40,7 +35,6 @@ class TestAcmeTinyHelper:
         assert self.manager._getSelfSignedCertificate() == expected
 
 
-
     def test_getSignedCertificate(self):
         assert self.manager._getSignedCertificate() == 'python /bin/acme_tiny.py --account-key /my/path/account.key --csr /my/path/domain.csr --acme-dir /var/www/challenges > /my/path/signed.crt'
 
@@ -49,7 +43,6 @@ class TestAcmeTinyHelper:
 
         self.manager.challenge_path = '/tmp/challenges'
         assert self.manager._getSignedCertificate() == 'python /usr/bin/acme_tiny.py --account-key /my/path/account.key --csr /my/path/domain.csr --acme-dir /tmp/challenges > /my/path/signed.crt'
-
 
 
     def test_chainCertificates(self):
