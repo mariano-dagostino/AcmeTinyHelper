@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mariano-dagostino/AcmeTinyHelper.svg?branch=master)](https://travis-ci.org/mariano-dagostino/AcmeTinyHelper)
+
 # AcmeTinyHelper
 
 This project is a helper for [acme-tiny.py](https://github.com/diafygi/acme-tiny)
