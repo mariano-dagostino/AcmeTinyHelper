@@ -107,7 +107,7 @@ class AcmeTinyHelperConsole(object):
             self.checkMissingParams()
             self.run(sys.argv[1], opts)
 
-        except getopt.GetoptError, e:
+        except (getopt.GetoptError, e):
             print(e)
             print(self.usage())
             sys.exit(2)
