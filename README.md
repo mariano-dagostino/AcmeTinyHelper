@@ -19,8 +19,6 @@ openssl genrsa 4096 > /etc/letsencrypt/certs/example.com/account.key
 
 openssl genrsa 4096 > /etc/letsencrypt/certs/example.com/domain.key
 
-openssl dhparam -out /etc/letsencrypt/certs/example.com/dhparam.pem 4096
-
 wget -O - https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem > /etc/letsencrypt/certs/example.com/intermediate.pem
 
 openssl req -new -sha256 -key /etc/letsencrypt/certs/example.com/domain.key -subj "/CN=example.com" > /etc/letsencrypt/certs/example.com/domain.csr
